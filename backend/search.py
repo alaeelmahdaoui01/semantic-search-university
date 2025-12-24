@@ -16,9 +16,9 @@ def load_metadata():
     with open(METADATA_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
 
-def load_chunks():
-    with open(CHUNKS_PATH, "r", encoding="utf-8") as f:
-        return [line.strip() for line in f.readlines()]
+# def load_chunks():
+#     with open(CHUNKS_PATH, "r", encoding="utf-8") as f:
+#         return [line.strip() for line in f.readlines()]
 
 
 def semantic_search(query: str, top_k: int = 5):

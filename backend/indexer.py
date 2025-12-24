@@ -1,11 +1,11 @@
 import numpy as np
-from embeddings import load_embedding_model
+from backend.embeddings import load_embedding_model
 
 import faiss
 import json
 
 import os
-from utils.text_processing import extract_text_from_pdf, clean_text, chunk_text
+from backend.utils.text_processing import extract_text_from_pdf, clean_text, chunk_text
 
 RAW_DATA_DIR = "data/raw"
 PROCESSED_DATA_DIR = "data/processed"
@@ -123,3 +123,67 @@ if __name__ == "__main__":
 # index.faiss → vector index
 # chunks.txt → text chunks
 # Embedding model
+
+
+
+# This allows incremental indexing without rebuilding everything when uploading new pdfs 
+def process_single_pdf(path):
+    
+    pages = extract_text_from_pdf(path)
+    all_chunks = []
+
+    for page_data in pages:
+        chunks = chunk_text(
+            page_data["text"],
+            source=os.path.basename(path),
+            page=page_data["page"]
+        )
+        all_chunks.extend(chunks)
+
+    embeddings = load_embedding_model().encode([c["text"] for c in all_chunks])
+    print(f"Processed {len(all_chunks)} chunks from {path}")
+    return all_chunks, embeddings
+
+#Update FAISS index with new chunks
+def update_index_with_new_chunks(new_chunks, new_embeddings):
+
+    # Load existing index
+    index = faiss.read_index("data/processed/index.faiss")
+
+    # Add new embeddings
+    index.add(new_embeddings)
+
+    # Save updated index
+    faiss.write_index(index, "data/processed/index.faiss")
+
+    # Load existing metadata
+    with open("data/processed/metadata.json", "r", encoding="utf-8") as f:
+        metadata = json.load(f)
+
+    # Append new chunks
+    metadata.extend(new_chunks)
+
+    # Save metadata
+    with open("data/processed/metadata.json", "w", encoding="utf-8") as f:
+        json.dump(metadata, f, ensure_ascii=False, indent=2)
+
+
+
+# when you upload a new PDF
+
+# File is saved (both in data/raw and frontend/pdfs/)
+
+# Backend calls process_single_pdf(file_path) →
+# Extracts pages
+# Chunks each page
+# Adds metadata (text, source, page)
+# Creates embeddings
+
+# Backend calls update_index_with_new_chunks(new_chunks, new_embeddings) →
+# Loads existing FAISS index
+# Adds new embeddings
+# Loads existing metadata.json
+# Appends new_chunks to the metadata list
+# Saves updated metadata.json
+
+

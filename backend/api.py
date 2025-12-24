@@ -1,6 +1,9 @@
 
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, Query, UploadFile, File
+import shutil
+import os
+from backend.indexer import process_single_pdf, update_index_with_new_chunks
 #from search import semantic_search
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -66,3 +69,35 @@ def search(
 # I exposed the semantic search pipeline through a FastAPI service, 
 # providing a documented REST endpoint that allows clients 
 # to retrieve semantically relevant document chunks using vector similarity.
+
+
+UPLOAD_DIR = "data/raw"  
+FRONTEND_PDFS_DIR = "frontend/pdfs" 
+
+
+@app.post("/upload-pdf")
+async def upload_pdf(file: UploadFile = File(...)):
+    if not file.filename.endswith(".pdf"):
+        return {"error": "Only PDF files are allowed"}
+
+    file_path = os.path.join(UPLOAD_DIR, file.filename)
+    
+    # Save to backend storage
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    # Also copy to frontend folder for viewer
+    frontend_path = os.path.join(FRONTEND_PDFS_DIR, file.filename)
+    shutil.copyfile(file_path, frontend_path)
+
+    # Process the new PDF and update FAISS + metadata
+    new_chunks, new_embeddings = process_single_pdf(file_path)
+    update_index_with_new_chunks(new_chunks, new_embeddings)
+
+    return {"message": f"{file.filename} uploaded, indexed, and added to frontend/pdfs successfully"}
+
+@app.get("/list-pdfs")
+def list_pdfs():
+    files = os.listdir("frontend/pdfs")
+    files = [f for f in files if f.endswith(".pdf")]
+    return {"files": files}
