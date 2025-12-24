@@ -1068,5 +1068,480 @@
     "text": "Transitive Closure Correctness and complexity of Warshall’s algorithm Proposition For all ( u, v) ∈ V × V , we have cn(u, v) = 1 if and only if there exists a path from u to v in the digraph G, i.e. T = {(u, v) ∈ V 2 | cn(u, v) = 1}. Proof : Similar to the proof for Floyd-Warshall algorithm. Similar to Floyd-Warshall algorithm, we have the following complexities for Warshall’s algorithm : Time Complexity :O(|V |3). Space Complexity :O(|V |2). Omar Saadi (College of Computing) Algorithmic Foundations (GA) Computer Science School 18 / 18",
     "source": "Chapter9_AlgoFoundations3_GA.pdf",
     "page": 18
+  },
+  {
+    "text": "Theory of computation 1 Lecture 1: Automata and Regular languages Adnane Saoud Monday, September 2, 2024",
+    "source": "Lecture 1.pdf",
+    "page": 1
+  },
+  {
+    "text": "• Engineering degree (École Mohammadia d’ingénieurs) • Ph.D. in Control theory and Computer science at CentraleSupélec and ENS Paris-Saclay, France (2019) • Postdoc researcher at UC Santa Cruz, USA (2020) • Postdoc researcher at UC Berkeley, USA (2021) • Professor at CentraleSupélec (Sep 2021 – Aug 2022) • Professor at UM6P-CC (Since Sept 2023) Research interests: Control theory, machine learning, computer science About Me 2",
+    "source": "Lecture 1.pdf",
+    "page": 2
+  },
+  {
+    "text": "The Team 3 Instructor: Adnane Saoud Office: SHBM, College of Computing offices Office hours: I will be available Wednesday and Thursday (between 16:00 and 18:00) Or, send me an email and we will find a good time to meet Email: adnane.saoud@um6p.ma TA: Emmanuel Junior WAFO WEMBE (Ph.D. student, Control of monotone dynamical systems) Email: EmmanuelJunior.WafoWembe@um6p.ma TA: Sadek Belamfedel Alaoui (Postdoctoral researcher, Reinforcement learning -based control) Email: sadek.belamfedel@um6p.ma",
+    "source": "Lecture 1.pdf",
+    "page": 3
+  },
+  {
+    "text": "4 What is computation theory ?",
+    "source": "Lecture 1.pdf",
+    "page": 4
+  },
+  {
+    "text": "Introduction 5 Computability Theory - What is computable or not (problems that are solvable or not) - Examples: program verification, mathematical truth - Models of Computation: Finite automata: used in text processing, compilers, control of systems context- free grammar: used in programming languages and artificial intelligence Complexity Theory - What is computable in practice? - What makes some problems computationally easy or hard - Example: sorting and factoring problems - P versus NP problem",
+    "source": "Lecture 1.pdf",
+    "page": 5
+  },
+  {
+    "text": "6 About this course",
+    "source": "Lecture 1.pdf",
+    "page": 6
+  },
+  {
+    "text": "The main learning objectives of the course are as follows: • Formal Languages: Learn about formal languages, their syntax, and semantics. Describe and recognize different types of formal languages such as regular languages and context-free languages. • Automata Theory: Learn the fundamentals of automata theory such as finite automata, pushdown automata, and T uring machines. Learn how to design these machines, analyze their behavior, and understand their computational power. • Computability Theory: Learn the concept of computability, the Church-T uring thesis, and the Halting problem. Explore the limits of what is computationally solvable and understand undecidability. • Complexity Theory: Learn about computational complexity tools such as time and space complexity classes like P , NP . Be able to distinguish between problems that can be solved efficiently and those that are NP-complete or harder. • Problem Solving and Proof T echniques: Develop problem-solving skills by learning how to construct proofs. Be able to prove whether a problem is decidable or undecidable. • Practical Applications: While the primary focus is on theory, the course provides insights into practical applications, demonstrating how theoretical concepts relate to real-world computational problems. • Preparation for Advanced Studies: The course serves as a foundational course to pursue more advanced studies in computer science, in areas related to formal methods, automata theory. Learning Objectives 7",
+    "source": "Lecture 1.pdf",
+    "page": 7
+  },
+  {
+    "text": "Five components: 1. Lectures ▪ Thursday’s (and sometimes also Monday) 2. T utorials ▪ Monday (First session) Guided exercises sessions with the instructor 3. Labs ▪ Thursdays (Second session) Hands-on experience on computation theory tools Labs will not be graded, but will help you to further understand the material presented in the lectures Final Labs will be graded 4. Recitations ▪ Thursdays (Second session) Open exercises sessions for discussions and for answering questions 5. Project ▪ Thursdays (Second session) Structure of the Course 8",
+    "source": "Lecture 1.pdf",
+    "page": 8
+  },
+  {
+    "text": "Course Logistics • Canvas for Q&A and material – You will receive an email shortly providing a link the Canvas – All announcements will be posted there – Also, lecture slides, tutorials and labs – Please, participate and help each other! 9",
+    "source": "Lecture 1.pdf",
+    "page": 9
+  },
+  {
+    "text": "Reading Material 10 • The book is publicly available in electronic form – Pointers to chapters for every lecture (see the canvas)",
+    "source": "Lecture 1.pdf",
+    "page": 10
+  },
+  {
+    "text": "• Please ask questions, participate in discussions on Canvas • Play with software tools. Apply what you’ve learnt in theory – This is the actual goal of the lab sessions and the recitations • Give us your feedback! Some Personal Notes ☺ 11",
+    "source": "Lecture 1.pdf",
+    "page": 11
+  },
+  {
+    "text": "12 Topics that will be covered",
+    "source": "Lecture 1.pdf",
+    "page": 12
+  },
+  {
+    "text": "1. Introduction, Finite Automata, Regular Expressions 2. Nondeterminism, Closure Properties, from Regular Expressions to finite automata 3. The Regular Pumping Lemma, from Finite Automata to Regular Expressions, Context free grammar 4. Pushdown Automata, equivalence between pushdown automata and context free grammar 5. The Context free Pumping Lemma, Turing Machines 6. Turing machine Variants, the Church-Turing Thesis … Idea about the Schedule (Subject to Change) 13",
+    "source": "Lecture 1.pdf",
+    "page": 13
+  },
+  {
+    "text": "14 Finite automata",
+    "source": "Lecture 1.pdf",
+    "page": 14
+  },
+  {
+    "text": "Finite Automata 15 Input: finite string Output: Accept or Reject Computation process: Begin at start state, read input symbols, follow corresponding transitions, Accept if end with accept state, Reject if not. Examples: 01101 → Accept 00101 → Reject 𝑀1 accepts exactly those strings in 𝐴 where 𝐴 = {𝑤| 𝑤 contains substring 11}. 𝑀1 𝑞1 𝑞2 𝑞3 1 0,1 0 10 States: 𝑞1 𝑞2 𝑞3 Transitions: Start state: Accept states: 1 𝐴 is the language of 𝑀1 and that 𝑀1 recognizes 𝐴 and that 𝐴 = 𝐿(𝑀1).",
+    "source": "Lecture 1.pdf",
+    "page": 15
+  },
+  {
+    "text": "Finite Automata – Formal Definition 16 Definition: A finite automaton 𝑀 is a 5-tuple (𝑄, Σ, 𝛿, 𝑞0, 𝐹) • 𝑄 finite set of states • Σ finite set of alphabet symbols • 𝛿 transition function 𝛿: 𝑄 × Σ → 𝑄 • 𝑞0 start state • 𝐹 set of accept states 𝛿 (𝑞, 𝑎) = 𝑟 means 𝑞 𝑟a 𝑀1 𝑞1 𝑞2 𝑞3 1 0,1 0 10 𝑀1 = (𝑄, Σ, 𝛿, 𝑞1, 𝐹) 𝑄 = {𝑞1, 𝑞2, 𝑞3} Σ = {0, 1} 𝐹 = {𝑞3} 0 1 𝑞1 𝑞1 𝑞2 𝑞2 𝑞1 𝑞3 𝑞3 𝑞3 𝑞3 𝛿 = Example:",
+    "source": "Lecture 1.pdf",
+    "page": 16
+  },
+  {
+    "text": "17 Regular languages",
+    "source": "Lecture 1.pdf",
+    "page": 17
+  },
+  {
+    "text": "Definition: A language is regular if some finite automaton recognizes it. Finite Automata and Regular languages 18 Strings and languages - A string is a finite sequence of symbols in Σ - A language is a set of strings - The empty string ε is the string of length 0 - The empty language ø is the set with no strings Definition: 𝑀 accepts string 𝑤 = 𝑤1𝑤2 … 𝑤𝑛 each 𝑤𝑖 𝜖 Σ if there is a sequence of states 𝑟0, 𝑟1, 𝑟2, , … , 𝑟𝑛 𝜖 𝑄 where: - 𝑟0 = 𝑞0 - 𝑟𝑖 = 𝛿(𝑟𝑖−1, 𝑤𝑖) for 1 ≤ 𝑖 ≤ 𝑛 - 𝑟𝑛 𝜖 𝐹Recognizing languages - 𝐿(𝑀) = {𝑤| 𝑀 accepts 𝑤} - 𝐿(𝑀) is the language of 𝑀 - 𝑀 recognizes 𝐿(𝑀)",
+    "source": "Lecture 1.pdf",
+    "page": 18
+  },
+  {
+    "text": "Regular Languages – Examples 𝐿 𝑀1 = {𝑤| 𝑤 contains substring 11} = 𝐴 Therefore 𝐴 is regular 𝑀1 𝑞1 𝑞2 𝑞3 1 0,1 0 10 Example of a non regular language: Let 𝐶 = 𝑤 𝑤 has equal numbers of 0s and 1s} 𝐶 is not regular (will be proven in next lectures). 19",
+    "source": "Lecture 1.pdf",
+    "page": 19
+  },
+  {
+    "text": "Regular Expressions Regular operations. Let 𝐴, 𝐵 be languages: - Union: 𝐴 ∪ 𝐵 = 𝑤 𝑤 ∈ 𝐴 or 𝑤 ∈ 𝐵} - Concatenation: 𝐴 ∘ 𝐵 = 𝑥𝑦 𝑥 ∈ 𝐴 and 𝑦 ∈ 𝐵} = 𝐴𝐵 - Star: 𝐴∗ = 𝑥1 … 𝑥𝑘 each 𝑥𝑖 ∈ 𝐴 for 𝑘 ≥ 0} Note: ε ∈ 𝐴∗ always Example. Let 𝐴 = {ab,bc} and 𝐵 = {fg, hk}. - 𝐴 ∪ 𝐵 - 𝐴 ∘ 𝐵 = 𝐴𝐵 - 𝐴∗ 20",
+    "source": "Lecture 1.pdf",
+    "page": 20
+  },
+  {
+    "text": "Regular Expressions Goal: Show that finite automata are equivalent to regular expressions Regular expressions - Built from Σ, members Σ, ∅, ε [Atomic] - By using ∪,∘,∗ [Composite] Examples: - 0 ∪ 1 ∗ = Σ∗ gives all strings over Σ - Σ∗1 gives all strings that end with 1 - Σ∗11Σ∗ = all strings that contain 11 = 𝐿 𝑀1 21",
+    "source": "Lecture 1.pdf",
+    "page": 21
+  },
+  {
+    "text": "22 Closure properties",
+    "source": "Lecture 1.pdf",
+    "page": 22
+  },
+  {
+    "text": "Closure Properties for Regular Languages Theorem: If 𝐴1, 𝐴2 are regular languages, so is 𝐴1 ∪ 𝐴2 (closure under ∪) Proof: Let 𝑀1 = (𝑄1, Σ, 𝛿1 , 𝑞1 , 𝐹1 ) recognize 𝐴1 𝑀2 = (𝑄2, Σ, 𝛿2 , 𝑞2 , 𝐹2 ) recognize 𝐴2 Construct 𝑀 = (𝑄 , Σ, 𝛿 , 𝑞0, 𝐹 ) recognizing 𝐴1 ∪ 𝐴2 𝑀 should accept input 𝑤 if either 𝑀1 or 𝑀2 accept 𝑤. 𝑀2 𝑟 𝑀1 𝑞 ? 𝑀 23",
+    "source": "Lecture 1.pdf",
+    "page": 23
+  },
+  {
+    "text": "Closure Properties for Regular Languages Theorem: If 𝐴1, 𝐴2 are regular languages, so is 𝐴1 ∪ 𝐴2 (closure under ∪) Proof: Let 𝑀1 = (𝑄1, Σ, 𝛿1 , 𝑞01 , 𝐹1 ) recognize 𝐴1 𝑀2 = (𝑄2, Σ, 𝛿2 , 𝑞02 , 𝐹2 ) recognize 𝐴2 Construct 𝑀 = (𝑄 , Σ, 𝛿 , 𝑞0, 𝐹 ) recognizing 𝐴1 ∪ 𝐴2 𝑀 should accept input 𝑤 if either 𝑀1 or 𝑀2 accept 𝑤. Components of 𝑴: 𝑄 = 𝑄1 × 𝑄2 = 𝑞1, 𝑞2 𝑞1 ∈ 𝑄1 and 𝑞2 ∈ 𝑄2} 𝑞0 = (𝑞01, 𝑞02) 𝛿 𝑞, 𝑟 , 𝑎 = 𝛿1 𝑞, 𝑎 , 𝛿2 𝑟, 𝑎 𝐹 = 𝐹1 × 𝐹2 𝐹 = 𝐹1 × 𝑄2 ∪ 𝑄1 × 𝐹2 when we need this? Theorem: If 𝐴1, 𝐴2 are regular languages, so is 𝐴1 ∩ 𝐴2 24",
+    "source": "Lecture 1.pdf",
+    "page": 24
+  },
+  {
+    "text": "25 Summary",
+    "source": "Lecture 1.pdf",
+    "page": 25
+  },
+  {
+    "text": "Summary 26 1. Introduction, outline of the course 2. Finite Automata and regular languages: formal definition 3. Regular Operations and Regular Expressions 4. Theorem: Class of regular languages is closed under union and intersection",
+    "source": "Lecture 1.pdf",
+    "page": 26
+  },
+  {
+    "text": "Theory of computation 1 Lecture 3: Automata and Regular languages Adnane Saoud Thursday, September 19, 2024",
+    "source": "Lecture 3.pdf",
+    "page": 1
+  },
+  {
+    "text": "Summary of lecture 2 Lecture 2 ▪ Nondeterministic finite automatas (NFAs) ▪ Closure under ∘ and ∗ ▪ How to convert regular expressions to finite automata Lecture 3 ▪ From finite automata to regular expressions ▪ Proving some languages are not regular ▪ Context free grammars 2",
+    "source": "Lecture 3.pdf",
+    "page": 2
+  },
+  {
+    "text": "3 From finite automata to regular expressions",
+    "source": "Lecture 3.pdf",
+    "page": 3
+  },
+  {
+    "text": "DFAs → Regular Expressions Recall Theorem: If a language is described by a regular expression then it is regular Proof: Conversion 𝑅 → NFA 𝑀 → DFA 𝑀′ Today’s Theorem: If a language 𝐴 is regular then it can described as regular expression Proof: Give conversion DFA 𝑀 → 𝑅 We need a new concept: GNFA. • From DFA to GNFA • From GNFA to Regular expressions Regular expression 𝑅 𝑀 Finite automaton 4",
+    "source": "Lecture 3.pdf",
+    "page": 4
+  },
+  {
+    "text": "Generalized NFAs Definition: A Generalized Nondeterministic Finite Automaton (GNFA) is similar to an NFA, but allows regular expressions as transition labels 5 We first convert the GNFA to have this special form: • The start state has transition arrows going to every other state but no arrows coming in from any other state. • There is only a single accept state, and it has arrows coming in from every other state but no arrows going to any other state. Furthermore, the accept state is not the same as the start state. • Except for the start and accept states, one arrow goes from every state to every other state and also from each state to itself. 𝐺1 𝑞1 aba∗b∗ b a 𝑞3 a ∪ b aab 𝑞2",
+    "source": "Lecture 3.pdf",
+    "page": 5
+  },
+  {
+    "text": "Generalized NFAs Definition: A Generalized Nondeterministic Finite Automaton (GNFA) is similar to an NFA, but allows regular expressions as transition labels 6 How to convert the GNFA into the special form: • The start state has transition arrows going to every other state but no arrows coming in from any other state. ➢ Add a new start state with an ε arrow to the old start state • There is only a single accept state, and it has arrows coming in from every other state but no arrows going to any other state. Furthermore, the accept state is not the same as the start state. ➢ Add a new accept state with ε arrows from the old accept states. • Except for the start and accept states, one arrow goes from every state to every other state and also from each state to itself. ➢ If there are multiple arrows going between the same two states in the same direction, we replace each with a single arrow whose label is the union of the previous labels. ➢ We add arrows labeled ∅ between states that had no arrows",
+    "source": "Lecture 3.pdf",
+    "page": 6
+  },
+  {
+    "text": "7 GNFA → Regular Expressions Lemma: Every GNFA 𝐺 has an equivalent regular expression 𝑅 Proof: By induction on the number of states 𝑘 of 𝐺 Basis (𝑘 = 2): Let 𝑅 = 𝑟 Induction step (𝑘 > 2): Assume Lemma true for 𝑘 − 1 states and prove for 𝑘 states IDEA: Convert 𝑘-state GNFA to equivalent 𝑘 − 1 -state GNFA 𝑟𝐺 = 𝐺 is in special form 𝑘 states GNFA 𝑘 − 1 states GNFA",
+    "source": "Lecture 3.pdf",
+    "page": 7
+  },
+  {
+    "text": "𝑘-state GNFA → (𝑘—1)-state GNFA 𝑘 − 1 states𝑘 states 𝑥 𝑥 𝑞𝑖 𝑞𝑗𝑞𝑖 𝑞𝑗 𝑟1 𝑟2 𝑟3 𝑟4 𝑟1 𝑟2 ∗𝑟3 ∪ 𝑟4 1. Pick any state 𝑥 except the start and accept states. 2. Remove 𝑥. 3. Repair the damage by recovering all paths that went through 𝑥. 4. Make the indicated change for each pair of states 𝑞𝑖, 𝑞𝑗. 8",
+    "source": "Lecture 3.pdf",
+    "page": 8
+  },
+  {
+    "text": "9 Pumping Lemma",
+    "source": "Lecture 3.pdf",
+    "page": 9
+  },
+  {
+    "text": "Non-Regular Languages 10 How do we show a language is not regular? - To show a language is regular, we give a DFA. - To show a language is not regular, we must give a proof. - It is not enough to say that you couldn’t find a DFA for it, therefore the language isn’t regular .",
+    "source": "Lecture 3.pdf",
+    "page": 10
+  },
+  {
+    "text": "Method for Proving Non-regularity 11 Pumping Lemma: For every regular language 𝐴, there is a number 𝑝 (the “pumping length”) such that for any string 𝑠 ∈ 𝐴 satisfying 𝑠 ≥ 𝑝 there exist 𝑥, 𝑦 and 𝑧 such that 𝑠 = 𝑥𝑦𝑧 where 1) 𝑥𝑦𝑖𝑧 ∈ 𝐴 for all 𝑖 ≥ 0 𝑦𝑖 = 𝑦𝑦 ⋯ 𝑦 2) 𝑦 ≠ ε 3) 𝑥𝑦 ≤ 𝑝 Informally: 𝐴 is regular → every long string in 𝐴 can be pumped and the result stays in 𝐴. Proof: Let DFA 𝑀 recognize 𝐴. Let 𝑝 be the number of states in 𝑀. Pick 𝑠 ∈ 𝐴 where 𝑠 ≥ 𝑝. 𝑖 𝑥 𝑦 𝑧 𝑀 𝑞𝑗 𝑠 = 𝑥 𝑦 𝑧 𝑞𝑗 𝑞𝑗 𝑀 will repeat a state 𝑞𝑗 when reading 𝑠 because 𝑠 is so long. The path that 𝑀 follows when reading 𝑠. 𝑥 𝑦 𝑦 𝑧 𝑞𝑗 𝑞𝑗 𝑞𝑗 is also accepted",
+    "source": "Lecture 3.pdf",
+    "page": 11
+  },
+  {
+    "text": "Example 1 of Proving Non-regularity 12 Let 𝐷 = 0𝑘1𝑘 𝑘 ≥ 0} Show: 𝐷 is not regular Proof by Contradiction: Assume (to get a contradiction) that 𝐷 is regular . The pumping lemma gives 𝑝 as above. Let 𝑠 = 0𝑝1𝑝 ∈ 𝐷. Pumping lemma says that can divide 𝑠 = 𝑥𝑦𝑧 satisfying the 3 conditions. But 𝑥𝑦𝑦𝑧 has excess 0s and thus 𝑥𝑦𝑦𝑧 ∉ 𝐷 contradicting the pumping lemma. Therefore our assumption (𝐷 is regular) is false. We conclude that 𝐷 is not regular. Pumping Lemma: For every regular language 𝐴, there is a 𝑝 such that for any string 𝑠 ∈ 𝐴 satisfying 𝑠 ≥ 𝑝 there exist 𝑥, 𝑦 and 𝑧 such that 𝑠 = 𝑥𝑦𝑧 where 1) 𝑥𝑦𝑖𝑧 ∈ 𝐴 for all 𝑖 ≥ 0 𝑦𝑖 = 𝑦𝑦 ⋯ 𝑦 2) 𝑦 ≠ ε 3) 𝑥𝑦 ≤ 𝑝 ≤ 𝑝 𝑧𝑥 𝑦 𝑠 = 000 ⋯ 000111 ⋯ 111",
+    "source": "Lecture 3.pdf",
+    "page": 12
+  },
+  {
+    "text": "Example 2 of Proving Non-regularity 13 Let 𝐹 = 𝑤𝑤 𝑤 ∈ Σ∗} . Say Σ∗ = {0,1}. Show: 𝐹 is not regular Proof by Contradiction: Assume (for contradiction) that 𝐹 is regular . The pumping lemma gives 𝑝 as above. Need to choose 𝑠 ∈ 𝐹. Which 𝑠? Try 𝑠 = 0𝑝0𝑝 ∈ 𝐹. But that 𝑠 can be pumped and stay inside 𝐹. Bad choice. Try 𝑠 = 0𝑝10𝑝1 ∈ 𝐹. Show cannot be pumped 𝑠 = 𝑥𝑦𝑧 satisfying the 3 conditions. 𝑥𝑦𝑦𝑧 ∉ 𝐹 Contradiction! Therefore 𝐹 is not regular. 𝑠 = 000 ⋯ 001000 ⋯ 001 ≤ 𝑝 𝑧𝑥 𝑦",
+    "source": "Lecture 3.pdf",
+    "page": 13
+  },
+  {
+    "text": "Example 3 of Proving Non-regularity 14 Let 𝐵 = 𝑤 𝑤 has equal numbers of 0s and 1s} Show: 𝐵 is not regular Proof by Contradiction: Assume (for contradiction) that 𝐵 is regular . We know that 0∗1∗ is regular so 𝐵 ∩ 0∗1∗ is regular (closure under intersection). But 𝐷 = 𝐵 ∩ 0∗1∗ and we already showed 𝐷 is not regular. Contradiction! Therefore our assumption is false, so 𝐵 is not regular. Variant: Combine closure properties with the Pumping Lemma.",
+    "source": "Lecture 3.pdf",
+    "page": 14
+  },
+  {
+    "text": "Converting NFAs to DFAs 15 Theorem: If an NFA recognizes 𝐴 then 𝐴 is regular Proof: Let NFA 𝑀 = (𝑄, Σ, 𝛿, 𝑞0 , 𝐹) recognize 𝐴 Construct DFA 𝑀′ = (𝑄′, Σ, 𝛿′, 𝑞0 ′ , 𝐹′) recognizing 𝐴 (Ignore the ε-transitions, can easily modify to handle them) IDEA: DFA 𝑀′ keeps track of the subset of possible states in NFA 𝑀. ε- transitions, can easily modify to handle them) Construction of 𝑴′: 𝑄′ = 𝓟 𝑄 𝛿′ 𝑅, 𝑎 = 𝑞 𝑞 ∈ 𝛿(𝑟, 𝑎) for some 𝑟 ∈ 𝑅} 𝑞0 ′ = {q0} 𝐹′ = 𝑅 ∈ 𝑄′ 𝑅 intersects 𝐹} 6 Context-free Languages",
+    "source": "Lecture 3.pdf",
+    "page": 15
+  },
+  {
+    "text": "Context Free Grammars 16 } ((Substitution) Rules Rule: Variable → string of variables and terminals Variables: Symbols appearing on left-hand side of rule Terminals: Symbols appearing only on right-hand side Start Variable: Top left symbol Grammars generate strings 1. Write down start variable 2. Replace any variable according to a rule Repeat until only terminals remain 3. Result is the generated string 4. 𝐿(𝐺) is the language of all generated strings. 3 rules R,S 0,1 S S → 0S1 S → R R → ε 𝐺1 In 𝐺1:",
+    "source": "Lecture 3.pdf",
+    "page": 16
+  },
+  {
+    "text": "Context Free Grammars 17 } ((Substitution) Rules S → 0S1 S → R R → ε 𝐺1 Example of 𝐺1 generating a string S 0 S 1 0 S 1 R ε S 0S1 00S11 00R11 0011 𝐿 𝐺1 = 0𝑘1𝑘 𝑘 ≥ 0} Tree of substitutions Resulting string ∈ 𝐿 𝐺1",
+    "source": "Lecture 3.pdf",
+    "page": 17
+  },
+  {
+    "text": "18 Summary",
+    "source": "Lecture 3.pdf",
+    "page": 18
+  },
+  {
+    "text": "Summary 19 1. DFAs, NFAs, regular expressions are all equivalent 2. Proving languages not regular by using the pumping lemma and closure properties 3. Context Free Grammars",
+    "source": "Lecture 3.pdf",
+    "page": 19
+  },
+  {
+    "text": "Analyse numériqueSéance 4: Résolution de systèmes d’équations linéaires. Partie 2Mohammed-Khalil Ferradikhalil.ferradi@um6p.ma1",
+    "source": "chapitre_4.pdf",
+    "page": 1
+  },
+  {
+    "text": "2 Méthodes de résolution directes:- Méthode d’élimination de Gauss: le principe de la méthode est de transformer le système initial à résoudre 𝑨𝒙=𝒃en un système équivalent 𝑴𝑨𝒙=𝑴𝒃, tel que la matrice 𝑴𝑨est triangulaire supérieure et sans calculer explicitement la matrice 𝑴.Cette méthode est associée à la factorisation LUde la matrice: 𝑨=𝑳𝑼, avec LetU des matrices triangulaires inférieure et supérieure respectivement. Une fois la factorisation LU obtenue, on résout le système 𝑳𝒚=𝒃, puis le système 𝑼𝒙=𝒚. Pour obtenir 𝒙.-Méthode de Cholesky: cette méthode est valable pour une matrice 𝑨symétrique définie positive. Elle se base sur une factorisation de la matrice sous la forme suivante: 𝑨=𝑳்𝑳. On résout alors le système 𝑳்𝒚=𝒃, puis pour obtenir 𝒙le système 𝑳𝒙=𝒚.",
+    "source": "chapitre_4.pdf",
+    "page": 2
+  },
+  {
+    "text": "3 - Le principe de la méthode de Gauss est de transformer le système à résoudre en une forme triangulaire.- La méthode est basée sur des combinaisons linéaires des lignes de la matrice. Par exemple pour un vecteur de dimension 2 : 𝒂்=𝑎ଵ𝑎ଶ, si 𝑎ଵ≠ 0, alors:De manière plus générale:Avec 𝑚௜=௔೔௔ೖ ,𝑖=𝑘+1,…,𝑛et 𝑎௞≠0est appelé pivot.1 0−𝑎ଶ𝑎ଵ1𝑎ଵ𝑎ଶ=𝑎ଵ0𝑴௞𝒂=1 … 0 0 … 0⋮ ⋱ ⋮ ⋮ ⋱ ⋮0 … 1 0 … 00 … −𝑚௞ାଵ 1 … 0⋮ ⋱ ⋮ ⋮ ⋱ ⋮0 … −𝑚௡0 … 1𝑎ଵ⋮𝑎௞𝑎௞ାଵ⋮𝑎௡=𝑎ଵ⋮𝑎௞0⋮0 Méthode de Gauss:",
+    "source": "chapitre_4.pdf",
+    "page": 3
+  },
+  {
+    "text": "4 - La matrice 𝑴௞est appelée matrice d’élimination élémentaire. Elle rajoute des multiples de la ligne kaux lignes qui suivent, de manière à avoir des termes nuls au-dessous du terme en k.-La matrice 𝑴௞est triangulaire inférieure et inversible. Elle peut être représentée sous la forme suivante:Et 𝒆௞le kièmevecteur colonne de la matrice identité.- L’inverse de la matrice 𝑴௞noté 𝑳௞=𝑴௞ିଵest égale à:𝑴௞=𝑰−𝒎௞𝒆௞் , avec 𝒎௞=0 … 0𝑚௞ାଵ…𝑚௡்𝑳௞=𝑰+𝒎௞𝒆௞்",
+    "source": "chapitre_4.pdf",
+    "page": 4
+  },
+  {
+    "text": "5 - Pour deux matrices d’éliminations élémentaires 𝑴௞et 𝑴௝, avec j > k, leur produit est égal à:Pareil pour 𝑳௞𝑳௝: 𝑳௞𝑳௝=𝑰+𝒎௞𝒆௞்+𝒎௝𝒆௝்Exemple:Pour 𝒂=24−2: 𝑴ଵ𝒂=1−2 11 0 124−2=200, 𝑴ଶ𝒂=10 10 1/2 124−2=240𝑴௞𝑴௝=𝑰−𝒎௞𝒆௞்𝑰−𝒎௝𝒆௝்=𝑰−𝒎௞𝒆௞்−𝒎௝𝒆௝்+𝒎௞𝒆௞்𝒎௝𝒆௝்𝑴௞𝑴௝=𝑰−𝒎௞𝒆௞்−𝒎௝𝒆௝்𝑴ଵ𝑴ଶ=1−2 11 1/2 1",
+    "source": "chapitre_4.pdf",
+    "page": 5
+  },
+  {
+    "text": "6 - Pour la réduction d’un système d’équations linéaires 𝑨𝒙=𝒃sous forme triangulaire supérieure, on choisit d’abord 𝑎ଵଵ≠ 0comme pivot avec la matrice d’élimination 𝑴ଵcorrespondante, pour mettre à zéro les termes sous la diagonale de la 1èrecolonne :- Ensuite, avec le nouveau pivot 𝑎ଶଶ≠ 0de la matrice 𝑴ଵ𝑨, la matrice d’élimination 𝑴ଶcorrespondante est utilisée pourmettre à zéro les termes sous la diagonale de la 2ièmecolonne :- le processus est répété jusqu’à ce que le système soit complètement écrit sous forme triangulaire supérieure:Le système ainsi obtenu peut être résolu par substitution rétrograde (back-substitution). Ce processus est appelé méthode de Gauss. 𝑴ଵ𝑨𝒙=𝑴ଵ𝒃𝑴ଶ𝑴ଵ𝑨𝒙=𝑴ଶ𝑴ଵ𝒃𝑴௡ିଵ…𝑴ଶ𝑴ଵ𝑨𝒙=𝑴௡ିଵ…𝑴ଶ𝑴ଵ𝒃⇒ 𝑴𝑨𝒙=𝑴𝒃",
+    "source": "chapitre_4.pdf",
+    "page": 6
+  },
+  {
+    "text": "7 Système initial à résoudre:𝑨𝒙=𝑎ଵଵ଴𝑎ଵଶ଴𝑎ଵଷ଴…𝑎ଵ௡଴𝑎ଶଵ଴𝑎ଶଶ଴𝑎ଶଷ଴…𝑎ଶ௡଴𝑎ଷଵ଴𝑎ଷଶ଴𝑎ଷଷ଴…𝑎ଷ௡଴⋮ ⋮ ⋮ ⋱ ⋮𝑎௡ଵ଴𝑎௡ଶ଴𝑎௡ଷ଴…𝑎௡௡଴𝑥ଵ𝑥ଶ𝑥ଷ⋮𝑥௡=𝑏ଵ଴𝑏ଶ଴𝑏ଷ଴⋮𝑏௡଴𝑎ଵଵ଴𝑎ଵଶ଴𝑎ଵଷ଴…𝑎ଵ௡଴0𝑎ଶଶଵ𝑎ଶଷଵ…𝑎ଶ௡ଵ0𝑎ଷଶଵ𝑎ଷଷଵ…𝑎ଷ௡ଵ⋮ ⋮ ⋮ ⋱ ⋮0𝑎௡ଶଵ𝑎௡ଷଵ…𝑎௡௡ଵ ,𝑏ଵଵ𝑏ଶଵ𝑏ଷଵ⋮𝑏௡ଵ1ièreélimination:𝑎ଵଵ଴𝑎ଵଶ଴𝑎ଵଷ଴…𝑎ଵ௡଴0𝑎ଶଶଵ𝑎ଶଷଵ…𝑎ଶ௡ଵ0 0𝑎ଷଷଶ…𝑎ଷ௡ଶ⋮ ⋮ ⋮ ⋱ ⋮0 0𝑎௡ଷଶ…𝑎௡௡ଶ ,𝑏ଵଶ𝑏ଶଶ𝑏ଷଶ⋮𝑏௡ଶ2ièmeélimination:(n-1)ièmeélimination:𝑎ଵଵ଴𝑎ଵଶ଴𝑎ଵଷ଴…𝑎ଵ௡଴0𝑎ଶଶଵ𝑎ଶଷଵ…𝑎ଶ௡ଵ0 0𝑎ଷଷଶ…𝑎ଷ௡ଶ⋮ ⋮ ⋮ ⋱ ⋮0 0 0 …𝑎௡௡௡ିଵ ,𝑏ଵ௡ିଵ𝑏ଶ௡ିଵ𝑏ଷ௡ିଵ⋮𝑏௡௡ିଵQue faire si lors de la ièmeélimination le pivot est nul ?",
+    "source": "chapitre_4.pdf",
+    "page": 7
+  },
+  {
+    "text": "8 - L’inverse de la matrice 𝑴:Est une matrice triangulaire inférieure.- Le résultat 𝑼=𝑴𝑨est par construction une matrice triangulaire supérieure. On a donc:- Si au cours de la méthode de Gauss un des termes diagonaux est nul, la matrice 𝑼sera singulière. Néanmoins la factorisation LU est toujours possible.- La méthode de Gauss produit une factorisation LUd’une matrice donnée. La méthode de Gauss et la factorisation LUsont donc un même processus pour résoudre un système d’équations linéaires.- Une fois la factorisation LUde la matrice est obtenue, il devient facile d’obtenir le vecteur solution:𝑳=𝑴ିଵ=𝑴ଵିଵ…𝑴௡ିଵିଵ=𝑳ଵ…𝑳௡ି𝟏𝑨=𝑳𝑼on résout 𝑳𝒚=𝒃, puis 𝑼𝒙=𝒚",
+    "source": "chapitre_4.pdf",
+    "page": 8
+  },
+  {
+    "text": "9 Exemple:𝑆: 1 2 53 2 −10 5 3𝒙=10,51𝑆ଵ: 1 0 0−3 1 00 0 1𝑴భ 1 2 53 2 −10 5 3𝒙=10,51 ⇒ 1 2 50 −4 −160 5 3𝒙=1−2,51𝑆ଶ: 1 0 00 1 00 1,25 1𝑴మ 1 2 50 −4 −160 5 3𝒙=1−2,51 ⇒ 1 2 50 −4 −160 0 −17𝒙=1−2,5−2,125𝑼𝒙ୀ𝑴𝒃Résolution du système 𝑆ଶpar substitution : 𝑥ଵ=𝑥ଶ=𝑥ଷ=ଵ଼",
+    "source": "chapitre_4.pdf",
+    "page": 9
+  },
+  {
+    "text": "10 Pour obtenir explicitement la factorisation LU, on calcule la matrice L:On obtient donc la factorisation LU de la matrice A:𝑳=𝑴ଶ𝑴ଵିଵ=𝑳ଵ𝑳ଶ𝑳=1 0 03 1 00 0 11 0 00 1 00 −1,25 1=1 0 03 1 00 −1,25 1𝑨=1 2 53 2 −10 5 3=1 0 03 1 00 −1,25 11 2 50 −4 −160 0 −17=𝑳𝑼",
+    "source": "chapitre_4.pdf",
+    "page": 10
+  },
+  {
+    "text": "11 Technique du pivot partiel (partial pivoting):- T oute valeur non nulle peut être utilisée comme pivot. Néanmoins en pratique le pivot peut être choisi de telle manière à minimiser les erreurs de calculs.- Pour ne pas amplifier les erreurs d’arrondis lors de la multiplication du reste de la matrice à triangulariser avec la matrice d’élimination élémentaire, la valeur absolue des termes de la matrice élémentaire ne doit pas dépasser 1.- Ceci est obtenu en choisissant comme pivot d’une étape de la méthode de Gauss, la plus grande valeur possible entre la valeur du terme de la diagonale et les valeurs en dessous dans la même colonne.- Cette procédure, appelée pivot partiel, est essentiel pour une implémentation numérique stable de la méthode de Gauss.",
+    "source": "chapitre_4.pdf",
+    "page": 11
+  },
+  {
+    "text": "12 - Avec le pivot partiel, à chaque étape kde la méthode de Gauss, on effectue une permutation 𝑷௞avant de multiplier par la matrice 𝑴௞, de manière à toujours avoir le plus grand pivot possible dans la diagonale. On obtient toujours 𝑴𝑨=𝑼 avec 𝑼 une matrice triangulaire supérieure, mais avec 𝑴égale à:-La matrice 𝑳=𝑴ିଵn’est pas nécessairement triangulaire inférieure (triangulaire à npermutations près).-On peut effectuer les permutations en amont de la méthode de Gauss pour obtenir:Avec 𝑷=𝑷௡ିଵ…𝑷ଶ𝑷ଵreprésente les permutations effectuées sur les lignes de la matrice 𝑨, et 𝑳étant maintenant triangulaire inférieure.𝑴=𝑴௡ିଵ𝑷௡ିଵ…𝑴ଶ𝑷ଶ𝑴ଵ𝑷ଵ𝑷𝑨=𝑳𝑼",
+    "source": "chapitre_4.pdf",
+    "page": 12
+  },
+  {
+    "text": "13 - La technique du pivot partiel peut être généralisé à celle du pivot total, en considérant cette fois ci comme pivot le plus grand terme du reste de la matrice à triangulariser .- Le pivot total requiert une permutation des colonnes en plus de celle des lignes de la matrice. La factorisation s’exprime donc sous la forme suivante:Avec 𝑷et𝑸les matrices permutations, et 𝑳et 𝑼étant les matrices triangulaires inférieure et supérieure de la factorisation.- La stabilité numérique du pivot total et plus grande que celle du pivot partiel, mais la recherche du pivot devient plus coûteuse en temps de calcul.𝑷𝑨𝑸=𝑳𝑼",
+    "source": "chapitre_4.pdf",
+    "page": 13
+  },
+  {
+    "text": "14 Exemple:On considère la matrice à factoriser suivante : avec 0 <𝜀<𝜀௠௔௖௛Si les lignes ne sont pas permutées, le pivot est égal à 𝜀:Avec une arithmétique en virgule flottante, la matrice 𝑼devient: 𝑼=𝜀10 −1/𝜀et donc:𝑨=𝜀11 1𝑴𝑨=1 0−1𝜀1𝜀11 1=𝜀10 1 − 1/𝜀=𝑼 , 𝑳=1 01/𝜀1𝑳𝑼=1 01/𝜀1𝜀10 −1/𝜀=𝜀11 0≠𝑨- L’utilisation d’un pivot ayant une faible valeur a eu pour conséquence une perte en précision du procédé de factorisation",
+    "source": "chapitre_4.pdf",
+    "page": 14
+  },
+  {
+    "text": "15 On utilise maintenant la méthode du pivot partiel. Le pivot est donc égal à 1 et on obtient:𝑴𝑷𝑨=1 0−𝜀11 1𝜀1=1 10 1 −𝜀=𝑼 , 𝑳=1 0𝜀1Avec une arithmétique en virgule flottante, la matrice 𝑼devient: 𝑼=1 10 1et donc:𝑳𝑼=1 0𝜀11 10 1=1 1𝜀1 +𝜀≈1 1𝜀1=𝑷𝑨",
+    "source": "chapitre_4.pdf",
+    "page": 15
+  },
+  {
+    "text": "16 Pour certains types de matrices couramment utilisées, il n’est pas nécessaire d’effectuer un changement de pivot:-Matrice à diagonale strictement dominante:-Matrice symétrique définie positive: (les valeurs propres de la matrice sont toutes strictement positives)෍𝑎௜௝< |𝑎௜௜|௡௜ୀଵ,௜ஷ௝ , 𝑗= 1, … ,𝑛𝑨=𝑨் , 𝒙்𝑨𝒙> 0 pour tout 𝒙≠𝟎Une matrice définie positive est nécessairement à diagonale dominante, l’inverse n’étant pas forcément vérifié.",
+    "source": "chapitre_4.pdf",
+    "page": 16
+  },
+  {
+    "text": "17 Exemple:En utilisant une précision à trois chiffres, on résout le système suivant:La méthode de Gauss avec pivot partiel mène au système triangulaire suivant:Qu’on résout par substitution rétrograde:Malgré un résidu faible correspondant à la précision à 3 chiffres utilisée, la solution approchée 𝒙ෝest loin de la solution exacte 𝒙்=1 1. Ceci est dû au conditionnement de la matrice (𝜅𝑨> 8000) 0,641 0,2420,321 0,121𝑥ଵ𝑥ଶ=0,8830,4420,641 0,2420 0,000242𝑥ଵ𝑥ଶ=0,883−0,000383⇒ 𝒙ෝ=0,7821,58 , 𝒓=𝒃−𝑨𝒙ෝ=−0,000622−0,000202",
+    "source": "chapitre_4.pdf",
+    "page": 17
+  },
+  {
+    "text": "18 Remarques générales sur la factorisation LU:- Si deux factorisations de la même matrice sont disponibles: 𝑨=𝑳𝑼=𝑳෠𝑼෡, alors 𝑳෠ିଵ𝑳=𝑼෡𝑼ିଵ=𝑫, avec 𝑫une matrice diagonale. - Si 𝑳et 𝑳෠sont des matrices triangulaires inférieures unitaires (termes diagonaux égaux à 1), alors 𝑫=𝑰, et donc 𝑳=𝑳෠et 𝑼=𝑼෡. - Pour une factorisation 𝑨=𝑳𝑼avec 𝑳une matrice triangulaire inférieure unitaire, alors cette factorisation est unique.- La procédure de factorisation requiert environ 𝑛ଷ/3opérations de multiplication et un nombre similaire d’additions. Auxquelles il faut rajouter environ 2𝑛ଶopérations pour la résolution du système par substitution.- Le calcul direct de l’inverse 𝑨ିଵrequiert environ 𝑛ଷopérations. Pour le calcul de l’inverse, on résout 𝑛systèmes linéaires en plus de la factorisation, ce qui est donc plus coûteux que la résolution d’un seul système après la factorisation.",
+    "source": "chapitre_4.pdf",
+    "page": 18
+  },
+  {
+    "text": "19 Méthode (factorisation) de Cholesky:- Si 𝑨est une matrice symétrique définie positive, alors la factorisation LUpeut être remplacée par la factorisation de Cholesky𝑼=𝑳்: Avec 𝑳une matrice triangulaire inférieure avec des termes diagonaux positifs.Exemple:𝑨=𝑳𝑳்𝑎ଵଵ𝑎ଶଵ𝑎ଶଵ𝑎ଶଶ=𝑙ଵଵ0𝑙ଶଵ𝑙ଶଶ𝑙ଵଵ𝑙ଶଵ0𝑙ଶଶ ⇒ 𝑙ଵଵ=𝑎ଵଵ , 𝑙ଶଵ=𝑎ଶଵ𝑙ଵଵ , 𝑙ଶଶ=𝑎ଶଶ−𝑙ଶଵଶ",
+    "source": "chapitre_4.pdf",
+    "page": 19
+  },
+  {
+    "text": "20 Algorithme de factorisation de Cholesky pour une matrice 𝑨=𝑎௜௝ଵஸ௜,௝ஸ௡:Pour k = 1 , n𝑙௞௞=𝑎௞௞pour j = k+1 , n𝑙௝௞=𝑎௝௞/𝑙௞௞pour i = k+1 , j𝑎௜௝=𝑎௜௝−𝑙௜௞𝑙௝௞retourner𝑳=𝑙௜௝ଵஸ௜,௝ஸ௡- La factorisation de Cholesky requiert 𝑛ଷ/6opérations de multiplication, ce qui est deux fois moins que la factorisation LU.- Elle ne requiert aucun changement de pivot au cours de la procédure.",
+    "source": "chapitre_4.pdf",
+    "page": 20
+  },
+  {
+    "text": "21 Raffinement itératif des résultats:On suppose qu’on a une première approximation 𝒙଴de la solution du système 𝑨𝒙=𝒃. Le résidu est égal à:Pour améliorer la solution, on résout 𝑨𝒛଴=𝒓଴et on incrémente la solution:𝒙ଵest une meilleure solution, puisque:Le processus peut être répété jusqu’à l’obtention d’un résultat à la machine précision près.𝒓଴=𝒃−𝑨𝒙଴𝒙ଵ=𝒙଴+𝒛଴𝑨𝒙ଵ=𝑨𝒙଴+𝒛଴=𝑨𝒙଴+𝑨𝒛଴𝑨𝒙ଵ=𝒃−𝒓଴+𝒓଴=𝒃",
+    "source": "chapitre_4.pdf",
+    "page": 21
+  },
+  {
+    "text": "22 - Le raffinement itératif nécessite de stocker la matrice et sa factorisation en même temps.- Puisque la factorisation LU de la matrice 𝑨est déjà connue, le processus de raffinement du résultat nécessite seulement la résolution d’un système triangulaire par substitution.- Pour pallier les erreurs d’annulation, le résidu doit généralement être calculé avec une précision élevée pour produire des résultats pertinents.",
+    "source": "chapitre_4.pdf",
+    "page": 22
+  },
+  {
+    "text": "23Fin de la séance",
+    "source": "chapitre_4.pdf",
+    "page": 23
+  },
+  {
+    "text": "Analyse numériqueSéance 1: Introduction et résolution d’équations non-linéairesMohammed-Khalil Ferradikhalil.ferradi@um6p.ma1",
+    "source": "chapitre_1.pdf",
+    "page": 1
+  },
+  {
+    "text": "2 Qu’est-ce que l’analyse numérique ?L’analyse numérique est une branche des mathématiques appliquées, ayant pour objectif l’étude des algorithmes permettant d’approximer les solutions de problèmes mathématiques.But:- Simulation de phénomènes physiques réels- Conception sur un modèle virtuelDomaines d’applications: - Calcul des structures: ponts, barrages, tunnels…- Mécanique des fluides: Modélisation du flux d’air chaud pour le séchage du phosphate- Optimisation- … Introduction:",
+    "source": "chapitre_1.pdf",
+    "page": 2
+  },
+  {
+    "text": "3 Exemple 1:Approximation de Pi par la méthode d’Archimède: Pour n=96, Archimède a obtenu l’approximation suivante:3 +1071≤𝜋≤ 3 +17Utilisation d’une approche par l’intérieur et par l’extérieur pour obtenir un encadrement du résultat (et donc de l’erreur).",
+    "source": "chapitre_1.pdf",
+    "page": 3
+  },
+  {
+    "text": "4 Simulation de la rupture d’un câble de précontrainte tendu à 350t Exemple 2: Simulation de la rupture d’un câble",
+    "source": "chapitre_1.pdf",
+    "page": 4
+  },
+  {
+    "text": "5 - Au milieu de XXième siècle et avant l’avènement de l’ère informatique, les calculs étaient faits par des « humancomputers ». À la NASA, la résolution des équations pour le calcul de la trajectoire d’un engin spatial était faite par des algorithmes calculés manuellement.- Le développement de l’analyse numérique est intimement lié à celui des machines de calcul: résolution de problèmes à plusieurs millions de variables avec un simple ordinateur personnel.- Le but du modélisateur utilisant les méthodes d’analyse numérique est d’approximer la solution des équations mathématiques régissant un problème réel, tout en réduisant l’erreur numérique, le temps de calcul, et l’utilisation de la mémoire machine.",
+    "source": "chapitre_1.pdf",
+    "page": 5
+  },
+  {
+    "text": "6 Résolution d’équations non-linéaires:Pour une fonction notée 𝑓𝑥, on cherche la valeur 𝑥∗solution de l’équation suivante: 𝑓𝑥= 0- La solution 𝑥∗est appelée racine ou zéro de la fonction f.- Plusieurs solutions peuvent exister .On peut deux distinguer deux cas:•Les fonctions à une dimension 𝑓: ℝ → ℝayant une solution scalaire. •Un système couplé à ndimensions, avec 𝒇: ℝ௡→ ℝ௡, dont la solution au système 𝒇𝒙=𝟎est un vecteur .",
+    "source": "chapitre_1.pdf",
+    "page": 6
+  },
+  {
+    "text": "7 - Exemple d’équation non-linéaire à une dimension:- Exemple d’un système d’équations non-linéaires :tan𝑥−𝑥= 0Dont des solutions approximées sont: 7.72, 14.07, …𝑥ଵଶ−𝑥ଶ+ 0,25 = 0−𝑥ଵ+𝑥ଶଶ+ 0,25 = 0Dont la solution est le vecteur 𝒙்=0.5 0.5",
+    "source": "chapitre_1.pdf",
+    "page": 7
+  },
+  {
+    "text": "8 - L’existence est l’unicité d’une solution est plus difficile à déterminer pour les équations non-linéaires que pour les équations linéaires.- Pour une fonction continue 𝑓:𝑎,𝑏→ ℝ, si signe𝑓𝑎≠ signe𝑓𝑏, alors le TVI implique ∃𝑥∗ tel que 𝑓𝑥∗= 0.- Il n’y a pas d’analogue à ce résultat en dimension 𝑛> 1.- Les équations non-linéaires peuvent avoir un nombre quelconque de solutions, voire pas de solution.𝑒௫+ 1 = 0 nᇱa pas de solution𝑥ଶ− 1 = 0 a deux solutionstan𝑥−𝑥=0 a une infinité de solutions",
+    "source": "chapitre_1.pdf",
+    "page": 8
+  },
+  {
+    "text": "9 Méthode de dichotomie (ou de bissection):La méthode de dichotomie requiert un intervalle initial 𝑎,𝑏vérifiant signe𝑓𝑎≠ signe𝑓𝑏, dont la longueur est divisée par deux à chaque itération, jusqu’à l’obtention de la convergence avec la précision souhaitée.L’algorithme s’exprime comme suit:Choisir une précision 𝜀> 0et un intervalle initial 𝑎,𝑏vérifiant signe𝑓𝑎≠ signe𝑓𝑏T ant que 𝑏−𝑎>𝜀faire:𝑐=௔ା௕ଶsi signe𝑓𝑎= signe𝑓𝑐alorsa = csinonb = c",
+    "source": "chapitre_1.pdf",
+    "page": 9
+  },
+  {
+    "text": "10 Exemple:Intervalle de recherche initial 1,3.𝑓𝑥=𝑥ଶ− 4 sin(𝑥) = 0",
+    "source": "chapitre_1.pdf",
+    "page": 10
+  },
+  {
+    "text": "11 - La méthode de la bissection n'utilise pas les valeurs des fonctions ni leurs dérivées, seulement leurs signes. - La méthode est certaine de converger, mais très lentement (la convergence est linéaire).- Pour un intervalle de départ donné [a, b], la longueur de l'intervalle après k itérations est (b - a)/2k, donc pour atteindre une tolérance d'erreur 𝜀, il faut environ quel que soit la fonctionf impliquée.logଶ𝑏−𝑎𝜀 itérations",
+    "source": "chapitre_1.pdf",
+    "page": 11
+  },
+  {
+    "text": "12 Méthode du point fixe:- On appelle 𝑥un point fixe d’une fonction 𝑔: ℝ → ℝs’il vérifie:- De nombreuses méthodes itératives pour résoudre des équations non-linéaires utilisent un schéma d'itération à point fixe ayant la forme suivante:où les points fixes de gsont des solutions de l'équation 𝑓𝑥= 0.Exemple: le point fixe de la fonction 𝑔𝑥= tan𝑥est une solution de l’équation 𝑓𝑥= tan𝑥−𝑥= 0.- Pour une équation donnée 𝑓𝑥= 0, on peut avoir plusieurs représentations équivalentes sous la forme d’un problème de recherche de point fixe 𝑥=𝑔𝑥, avec différents choix pour la fonction g.𝑥=𝑔𝑥𝑥௞ାଵ=𝑔𝑥௞",
+    "source": "chapitre_1.pdf",
+    "page": 12
+  },
+  {
+    "text": "13 - T oute fonction 𝑔𝑥 n’admet pas forcément un point fixe.- Si la suite 𝑥௞définie par une valeur initiale 𝑥଴et les itérations 𝑥௞ାଵ=𝑔𝑥௞converge, alors elle converge nécessairement vers un point fixe.- Un schéma d’itération à point fixe ne converge pas forcément, même si la fonction admet un point fixe.- Si 𝑥∗=𝑔𝑥∗et 𝑔ᇱ𝑥∗< 1, alors il existe un intervalle contenant 𝑥∗tel que les itérations 𝑥௞ାଵ=𝑔𝑥௞convergent vers 𝑥∗.",
+    "source": "chapitre_1.pdf",
+    "page": 13
+  },
+  {
+    "text": "14 Pour la fonction 𝑓𝑥=𝑥ଶ−𝑥− 2, les points fixes des fonctions suivantes:représentent des solutions de l’équation 𝑓𝑥= 0.𝑔𝑥=𝑥ଶ− 2𝑔𝑥=𝑥+ 2𝑔𝑥= 1 +2𝑥𝑔𝑥=𝑥ଶ+ 22𝑥− 1",
+    "source": "chapitre_1.pdf",
+    "page": 14
+  },
+  {
+    "text": "15",
+    "source": "chapitre_1.pdf",
+    "page": 15
+  },
+  {
+    "text": "16",
+    "source": "chapitre_1.pdf",
+    "page": 16
+  },
+  {
+    "text": "17",
+    "source": "chapitre_1.pdf",
+    "page": 17
+  },
+  {
+    "text": "18 Méthode de Newton:On souhaite calculer la solution de l’équation suivante:𝑓𝑥= 0À partir d’un point initial 𝑥଴, l’équation à résoudre est linéarisée en utilisant l’approximation (linéarisation) suivante:ℒ𝑓𝑥= 0 ⇒ 𝑓𝑥଴+𝑓ᇱ𝑥଴Δ𝑥= 0Δ𝑥= −𝑓𝑥଴𝑓ᇱ𝑥଴ ⇒ 𝑥ଵ=𝑥଴+ Δ𝑥Calcul de l’incrément Δ𝑥:Vérification du critère de convergence: 𝑓𝑥ଵ<𝜀avec 𝜀> 0la précision souhaitéeLe calcul est répété jusqu’à l’atteinte de la convergence avec la précision fixée",
+    "source": "chapitre_1.pdf",
+    "page": 18
+  },
+  {
+    "text": "19 L’algorithme de résolution de l’équation 𝑓𝑥= 0par la méthode de Newton est:Choisir un 𝑥଴initial et une précision 𝜀> 0T ant que 𝑓𝑥௜> εfaire:𝑥௜ାଵ=𝑥௜−௙௫೔௙ᇲ௫೔𝑖←𝑖+ 1Peut-on utiliser un critère de convergence (d’arrêt) autre que 𝑓𝑥௜<𝜀?",
+    "source": "chapitre_1.pdf",
+    "page": 19
+  },
+  {
+    "text": "20 Représentation graphique de la méthode de Newton:𝑥଴𝑥ଵ𝑥ଷ𝑥ଶ𝑥∗𝑓𝑥଴𝑓𝑥ଵ𝑓𝑥ଶ𝑓𝑥ଷ 𝑥𝑓𝑥𝑥∗vérifiant 𝑓𝑥∗= 0𝑦",
+    "source": "chapitre_1.pdf",
+    "page": 20
+  },
+  {
+    "text": "21 Exemple: calcul de la racine carrée de 2𝑓𝑥=𝑥ଶ− 2 = 0𝑥଴=𝟏𝑥ଵ=𝑥଴−𝑓𝑥଴𝑓ᇱ𝑥଴= 1 +12=𝟏, 5𝑥ଶ=𝟏,𝟒𝟏6666667𝑥ଷ=1,414215686274509803921568627451𝑥ସ=1.41421356237468991062629557889013491011655𝑥ହ=1.41421356237309504880168962350253024361498(24 chiffres exacts)(12 chiffres exacts)(6 chiffres exacts)",
+    "source": "chapitre_1.pdf",
+    "page": 21
+  },
+  {
+    "text": "22 Définition de l’ordre de convergence:Soit une suite 𝑥௞convergeant vers sa limite 𝑥∗: lim௞→ାஶ𝑥௞=𝑥∗On dit que la suite converge en un ordre 𝛼s’il existe 𝐶> 0tel que:𝑥௞ାଵ−𝑥∗𝑥௞−𝑥∗ఈ≤𝐶 , 𝑘≥ 0la suite 𝑥௞converge:- linéairement s’il existe 0 <𝜏< 1tel que : 𝑥௞ାଵ−𝑥∗≤𝜏𝑥௞−𝑥∗pour ksuffisamment grand- Super-linéairement si : lim௫→ାஶ௫ೖశభି௫∗௫ೖି௫∗= 0- Quadratiquement s’il existe 𝐶> 0tel que: 𝑥௞ାଵ−𝑥∗≤𝐶𝑥௞−𝑥∗ଶpour ksuffisamment grand- Cubiquement s’il existe 𝐶>0tel que: 𝑥௞ାଵ−𝑥∗≤𝐶𝑥௞−𝑥∗ଷpour ksuffisamment grand",
+    "source": "chapitre_1.pdf",
+    "page": 22
+  },
+  {
+    "text": "23 Preuve de la convergence quadratique de la méthode de Newton:On considère l’équation suivante 𝑓𝑥= 0, avec fau moins deux fois dérivable, et 𝑥∗vérifiant 𝑓𝑥∗= 0,𝑓ᇱ𝑥∗≠ 0.On écrit le développement de T aylor de fau voisinage de la solution 𝑥∗: 𝑓𝑥∗=𝑓𝑥௡+𝑓ᇱ𝑥௡𝑥∗−𝑥௡+𝑓ᇱᇱ𝜉௡2!𝑥∗−𝑥௡ଶAvec 𝜉௡compris entre 𝑥∗et 𝑥௡𝑥∗=𝑥௡−𝑓𝑥௡𝑓ᇱ𝑥௡௫೙శభ−𝑓ᇱᇱ𝜉௡2𝑓ᇱ𝑥௡𝑥∗−𝑥௡ଶ ⟹ 𝑥∗−𝑥௡ାଵ= −𝑓ᇱᇱ𝜉௡2𝑓ᇱ𝑥௡𝑥∗−𝑥௡ଶ𝑒௡ାଵ=𝑓ᇱᇱ𝜉௡2𝑓ᇱ𝑥௡𝑒௡ଶ ⟹ 𝑒௡ାଵ<𝐶𝑒௡ଶAvec 0 <𝐶= sup௫∈ூ௙ᇲᇲ௫ଶ௙ᇲ௫< +∞On démontre donc la convergence quadratique de la méthode",
+    "source": "chapitre_1.pdf",
+    "page": 23
+  },
+  {
+    "text": "24 - Le choix du point de départ 𝑥଴a une influence sur la convergence de la méthode de Newton. En effet, 𝑥଴doit être choisi suffisamment proche de la solution pour que l’algorithme puisse converger .Exemple: 𝑓𝑥= tanିଵ𝑥= 0𝑥௞ାଵ=𝑥௞−1 +𝑥௞ଶtanିଵ𝑥௞ 𝑥ସ= 7,963 × 10ିଵ଴𝑥ଷ= −1,061 × 10ିଷ𝑥ଶ= 0,1169𝑥ଵ= −0,5707𝑥଴= 1𝑥ସ= 1,22 × 10ହ𝑥ଷ= −279,3𝑥ଶ= 13,95𝑥ଵ= −3,536𝑥଴= 2- Si la solution 𝑥∗vérifie 𝑓ᇱ𝑥∗= 0, la convergence n’est plus quadratique est devient donc lente.Exemple:𝑓𝑥=𝑥ଶ= 0𝑥௞ାଵ=𝑥௞−𝑥௞ଶ2𝑥௞=𝑥௞2(convergence linéaire)",
+    "source": "chapitre_1.pdf",
+    "page": 24
+  },
+  {
+    "text": "25 Méthode de la sécante:- La méthode de Newton nécessite de calculer la dérivée de la fonction fà chaque itération, ce qui peut s’avérer coûteux en temps de calcul ou difficile à obtenir pour certaines fonctions.- La méthode de la sécante propose d’utiliser une approximation de la dérivée au lieu de la dérivée elle-même. Le calcul du nouveau point à une itération donnée s’exprime donc par:𝑥௜ାଵ=𝑥௜−𝑓𝑥௜𝑥௜−𝑥௜ିଵ𝑓𝑥௜−𝑓𝑥௜ିଵ",
+    "source": "chapitre_1.pdf",
+    "page": 25
+  },
+  {
+    "text": "26𝑥଴𝑥ଵ𝑥ଶ𝑥∗𝑓𝑥଴𝑓𝑥ଵ𝑓𝑥ଶ 𝑥𝑓𝑥𝑦Représentation graphique de la méthode de la sécante: Le principe de la méthode de la sécante remonte à l’Egypte antique. Dans le papyrus de Berlin, la méthode est utilisée pour trouver les aires de deux carrés différents dont la somme est égale à 100 (coudées au carré), et dont le rapport des côtés de ces deux carrés étant de 1 pour (1/2 + 1/4). 𝑥ଷ",
+    "source": "chapitre_1.pdf",
+    "page": 26
+  },
+  {
+    "text": "27Fin de la séance",
+    "source": "chapitre_1.pdf",
+    "page": 27
   }
 ]
