@@ -2,6 +2,7 @@ import numpy as np
 from embeddings import load_embedding_model
 
 import faiss
+import json
 
 import os
 from utils.text_processing import extract_text_from_pdf, clean_text, chunk_text
@@ -16,6 +17,27 @@ PROCESSED_DATA_DIR = "data/processed"
 #Chunks it
 #Keeps metadata (VERY important later)
 
+# def process_documents():
+#     all_chunks = []
+
+#     for filename in os.listdir(RAW_DATA_DIR):
+#         if filename.endswith(".pdf"):
+#             path = os.path.join(RAW_DATA_DIR, filename)
+
+#             raw_text = extract_text_from_pdf(path)
+#             clean = clean_text(raw_text)
+#             chunks = chunk_text(clean)
+
+#             for chunk in chunks:
+#                 all_chunks.append({
+#                     "text": chunk,
+#                     "source": filename
+#                 })
+
+
+#     return all_chunks
+
+
 def process_documents():
     all_chunks = []
 
@@ -23,17 +45,23 @@ def process_documents():
         if filename.endswith(".pdf"):
             path = os.path.join(RAW_DATA_DIR, filename)
 
-            raw_text = extract_text_from_pdf(path)
-            clean = clean_text(raw_text)
-            chunks = chunk_text(clean)
+            pages = extract_text_from_pdf(path)
 
-            for chunk in chunks:
-                all_chunks.append({
-                    "text": chunk,
-                    "source": filename
-                })
+            for page_data in pages:
+                page_text = page_data["text"]
+                page_number = page_data["page"]
+
+                chunks = chunk_text(
+                    page_text,
+                    source=filename,
+                    page=page_number
+                )
+
+                for chunk in chunks:
+                    all_chunks.append(chunk)
 
     return all_chunks
+
 
 def embed_chunks(chunks):
     model = load_embedding_model()
@@ -59,9 +87,12 @@ def build_faiss_index(embeddings):
 def save_index(index, chunks):
     faiss.write_index(index, "data/processed/index.faiss")
 
-    with open("data/processed/chunks.txt", "w", encoding="utf-8") as f:
-        for chunk in chunks:
-            f.write(chunk["text"].replace("\n", " ") + "\n")
+    # with open("data/processed/chunks.txt", "w", encoding="utf-8") as f:
+    #     for chunk in chunks:
+    #         f.write(chunk["text"].replace("\n", " ") + "\n")
+
+    with open("data/processed/metadata.json", "w", encoding="utf-8") as f:
+        json.dump(chunks, f, ensure_ascii=False, indent=2)
 
 
 

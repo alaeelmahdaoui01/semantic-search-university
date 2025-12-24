@@ -2,6 +2,7 @@
 
 from fastapi import FastAPI, Query
 #from search import semantic_search
+from fastapi.middleware.cors import CORSMiddleware
 
 from backend.search import semantic_search
 
@@ -11,6 +12,15 @@ app = FastAPI(
     description="Semantic search over university documents using vector embeddings",
     version="1.0"
 )
+
+# from fastapi.middleware.cors import CORSMiddleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 
 @app.get("/")
@@ -49,6 +59,8 @@ def search(
 # Run the API
 # From the project root:  uvicorn backend.api:app --reload
 # You should see:  Uvicorn running on http://127.0.0.1:8000
+
+# http://127.0.0.1:8000/search?query=YOURQUERY
 
 
 # I exposed the semantic search pipeline through a FastAPI service, 

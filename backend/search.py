@@ -1,14 +1,20 @@
+import json
 import faiss
 import numpy as np
 from backend.embeddings import load_embedding_model
+#from embeddings import load_embedding_model
 
 INDEX_PATH = "data/processed/index.faiss"
 CHUNKS_PATH = "data/processed/chunks.txt"
+METADATA_PATH = "data/processed/metadata.json"
 
 
 def load_index():
     return faiss.read_index(INDEX_PATH)
 
+def load_metadata():
+    with open(METADATA_PATH, "r", encoding="utf-8") as f:
+        return json.load(f)
 
 def load_chunks():
     with open(CHUNKS_PATH, "r", encoding="utf-8") as f:
@@ -19,7 +25,8 @@ def semantic_search(query: str, top_k: int = 5):
     # Load resources
     model = load_embedding_model()
     index = load_index()
-    chunks = load_chunks()
+    metadata = load_metadata()
+    # chunks = load_chunks()
 
     # Embed the query
     query_embedding = model.encode([query])
@@ -29,12 +36,18 @@ def semantic_search(query: str, top_k: int = 5):
 
     results = []
     for idx, dist in zip(indices[0], distances[0]):
+        item = metadata[idx]
         results.append({
-            "text": chunks[idx],
+            "text": item["text"],
+            "source": item["source"],
+            "page": item["page"],
             "score": float(dist)
         })
 
     return results
+
+# idx is the FAISS vector ID
+# metadata[idx] gives you the corresponding chunk with source & page
 
 
 # FAISS returns distance, not similarity
