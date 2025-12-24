@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Document Search</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #fafbfc;
+                padding: 2rem;
+                max-width: 1000px;
+                margin: 0 auto;
+                line-height: 1.5;
+            }
+
+            nav {
+                text-align: center;
+                margin-bottom: 3rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #eaeaea;
+            }
+
+            nav a {
+                color: #2563eb;
+                text-decoration: none;
+                font-weight: 500;
+                margin: 0 1rem;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+            }
+
+            nav a:hover {
+                background: #f1f5f9;
+            }
+
+            .container {
+                background: white;
+                padding: 2.5rem;
+                border-radius: 12px;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            }
+
+            h1 {
+                color: #1e293b;
+                margin-bottom: 0.5rem;
+                font-weight: 700;
+            }
+
+            .container > p {
+                color: #64748b;
+                margin-bottom: 2rem;
+            }
+
+            input {
+                width: 75%;
+                padding: 1rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                font-size: 1rem;
+                transition: border 0.2s;
+            }
+
+            input:focus {
+                outline: none;
+                border-color: #2563eb;
+            }
+
+            button {
+                padding: 1rem 2rem;
+                background: #2563eb;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+
+            button:hover {
+                background: #1d4ed8;
+            }
+
+            .result {
+                margin-top: 1.5rem;
+                padding: 1.5rem;
+                background: #f8fafc;
+                border-radius: 8px;
+                border-left: 4px solid #2563eb;
+            }
+
+            .score {
+                color: #475569;
+                font-size: 0.875rem;
+                margin: 0.5rem 0;
+            }
+
+            .metadata a {
+                color: #2563eb;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+            .metadata a:hover {
+                text-decoration: underline;
+            }
+
+            #results {
+                margin-top: 2rem;
+            }
+        </style>
+        
+
+    </head>
+    <body>
+        <nav>
+            <a href="upload.html">Documents</a>|
+            <a href="search.html">Search</a>
+        </nav>
+
+        <div class="container">
+            <h1>University Semantic Search</h1>
+            <p>Search university documents by meaning, not keywords.</p>
+
+            <input type="text" id="query" placeholder="Enter your question..." />
+            <button onclick="search()">Search</button>
+
+            <div id="results"></div>
+
+        </div>
+
+        <script>
+            async function search() {
+                const query = document.getElementById("query").value;
+                const resultsDiv = document.getElementById("results");
+
+                resultsDiv.innerHTML = "<p>Searching...</p>";
+
+                const response = await fetch(
+                    `http://127.0.0.1:8000/search?query=${encodeURIComponent(query)}`
+                );
+
+                const data = await response.json();
+
+                resultsDiv.innerHTML = "";
+
+                data.results.forEach((item, index) => {
+                    const div = document.createElement("div");
+                    div.className = "result";
+                    const pdfUrl = `pdfs/${item.source}#page=${item.page}`;
+
+                    div.innerHTML = `
+                        <strong>Result ${index + 1}</strong>
+                        <p>${item.text}</p>
+                        <div class="score">Score: ${item.score.toFixed(4)}</div>
+                        <div class="metadata">
+                            📄 <a href="${pdfUrl}" target="_blank">${item.source}</a> — page ${item.page}
+                        </div>
+                    `;
+                    
+
+                    resultsDiv.appendChild(div);
+                });
+            }
+
+        </script>
+    </body>
+</html>
+

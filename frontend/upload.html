@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>University Documents</title>
+        <style>
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+                background: #fafbfc;
+                padding: 2rem;
+                max-width: 1000px;
+                margin: 0 auto;
+                line-height: 1.5;
+            }
+
+            nav {
+                text-align: center;
+                margin-bottom: 3rem;
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #eaeaea;
+            }
+
+            nav a {
+                color: #2563eb;
+                text-decoration: none;
+                font-weight: 500;
+                margin: 0 1rem;
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+            }
+
+            nav a:hover {
+                background: #f1f5f9;
+            }
+
+            h1 {
+                color: #1e293b;
+                margin-bottom: 1rem;
+                font-weight: 700;
+            }
+
+            h2 {
+                color: #334155;
+                margin: 2rem 0 1rem;
+                font-weight: 600;
+            }
+
+            form {
+                display: flex;
+                gap: 1rem;
+                margin: 1.5rem 0 2rem;
+                align-items: center;
+            }
+
+            input[type="file"] {
+                padding: 1rem;
+                border: 1px solid #e2e8f0;
+                border-radius: 8px;
+                background: white;
+                width: 70%;
+            }
+
+            button {
+                padding: 1rem 2rem;
+                background: #2563eb;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 1rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: background 0.2s;
+            }
+
+            button:hover {
+                background: #1d4ed8;
+            }
+
+            #uploadMessage {
+                color: #059669;
+                margin: 1rem 0;
+                padding: 0.75rem;
+                background: #f0fdf4;
+                border-radius: 6px;
+                border: 1px solid #bbf7d0;
+            }
+
+            ul#pdfList {
+                list-style: none;
+                padding: 0;
+                margin: 1.5rem 0 0;
+            }
+
+            ul#pdfList li {
+                padding: 1rem;
+                margin-bottom: 0.5rem;
+                background: #f8fafc;
+                border-radius: 6px;
+                border: 1px solid #e2e8f0;
+                color: #475569;
+            }
+            .metadata a {
+                color: #2563eb;
+                text-decoration: none;
+                display: inline-flex;
+                align-items: center;
+                gap: 0.25rem;
+            }
+
+            .metadata a:hover {
+                text-decoration: underline;
+            }
+
+            #results {
+                margin-top: 2rem;
+            }
+        </style>
+    </head>
+    <body>
+
+        <nav>
+            <a href="upload.html">Documents</a> |
+            <a href="search.html">Search</a>
+        </nav>
+
+        <h1>Available University Documents</h1>
+
+        <h2>Upload a new PDF</h2>
+        <form id="uploadForm">
+            <input type="file" id="pdfFile" accept=".pdf" />
+            <button type="submit">Upload</button>
+        </form>
+        <div id="uploadMessage"></div>
+
+        <h2>Available PDFs</h2>
+        <ul id="pdfList"></ul>
+
+        <script>
+            async function fetchPDFs() {
+                const response = await fetch("http://127.0.0.1:8000/list-pdfs");
+                const data = await response.json();
+                const list = document.getElementById("pdfList");
+                list.innerHTML = "";
+                data.files.forEach(file => {
+                    const pdfUrl = `pdfs/${file}`;
+                    const li = document.createElement("li");
+                    li.innerHTML =`
+                        <div class="metadata">
+                            📄 <a href="${pdfUrl}" target="_blank">${file}</a>
+                        </div>
+                    `;
+                    list.appendChild(li);
+                });
+            }
+
+            // Handle upload
+            document.getElementById("uploadForm").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const fileInput = document.getElementById("pdfFile");
+                const file = fileInput.files[0];
+                if (!file) return alert("Select a PDF first!");
+
+                const formData = new FormData();
+                formData.append("file", file);
+
+                const response = await fetch("http://127.0.0.1:8000/upload-pdf", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await response.json();
+                document.getElementById("uploadMessage").innerText = data.message;
+
+                await fetchPDFs(); // refresh list
+            });
+
+            fetchPDFs(); // initial load
+        </script>
+    </body>
+</html>
